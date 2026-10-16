@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyFlow — Student Productivity Dashboard</title>
+  <meta name="description" content="Turn your assignments into an actionable daily view. Track tasks, deadlines, and progress with StudyFlow." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ───────────────────────── SIDEBAR ───────────────────────── -->
+  <aside class="sidebar" id="sidebar" role="navigation" aria-label="Sidebar navigation">
+    <div class="sidebar-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <span class="logo-text">StudyFlow</span>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar" title="Toggle sidebar (Ctrl+B)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <span class="nav-label">Views</span>
+        <a href="#" class="nav-item active" id="nav-dashboard" data-view="dashboard" title="Dashboard (Alt+1)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-item" id="nav-board" data-view="board" title="Board (Alt+2)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="6" height="20"/><rect x="10" y="6" width="6" height="16"/><rect x="18" y="10" width="6" height="12"/></svg>
+          <span>Priority Board</span>
+        </a>
+        <a href="#" class="nav-item" id="nav-calendar" data-view="calendar" title="Calendar (Alt+3)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Calendar</span>
+        </a>
+        <a href="#" class="nav-item" id="nav-tools" data-view="tools" title="Study Tools (Alt+4)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>Study Tools</span>
+          <span class="nav-badge">NEW</span>
+        </a>
+      </div>
+
+      <div class="nav-section">
+        <span class="nav-label">Subjects</span>
+        <div id="subjectsList" class="subjects-list"></div>
+        <button class="add-subject-btn" id="addSubjectBtn" title="Add subject">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Add Subject</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle theme (Ctrl+Shift+L)">
+        <span class="theme-icon sun">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </span>
+        <span class="theme-icon moon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </span>
+        <span class="theme-label"></span>
+      </button>
+      <div id="xpStreakBar" class="xp-streak-bar">
+        <div class="xp-label"><span class="xp-fire">🔥</span> <span id="streakCount">0</span> day streak</div>
+        <div class="xp-bar-bg"><div class="xp-bar-fill" id="xpFill"></div></div>
+        <div class="xp-pts" id="xpPts">0 XP</div>
+      </div>
+      <div class="shortcuts-hint" title="Show keyboard shortcuts (?)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Shortcuts: press ?</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ───────────────────────── MAIN ───────────────────────── -->
+  <main class="main" id="mainContent">
+
+    <!-- TOP BAR -->
+    <header class="topbar" id="topbar">
+      <div class="topbar-left">
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <div class="greeting-block">
+          <h1 class="greeting" id="greeting">Good Evening 👋</h1>
+          <p class="date-display" id="dateDisplay"></p>
+        </div>
+      </div>
+
+      <!-- Topbar Center: IST Clock & Quick Launchers -->
+      <div class="topbar-center" id="topbarCenter">
+        <div class="ist-clock-badge" id="istClockBadge" title="Indian Standard Time (IST · UTC+5:30)">
+          <span class="ist-flag">🇮🇳</span>
+          <div class="ist-clock-content">
+            <div class="ist-time-row">
+              <span class="ist-time" id="istTime">--:--:--</span>
+              <span class="ist-ampm" id="istAmpm">--</span>
+              <span class="ist-badge-pill">IST</span>
+            </div>
+            <div class="ist-date" id="istDate">--</div>
+          </div>
+        </div>
+        <div class="topbar-quick-actions">
+          <button class="btn-quick-action" id="topbarQuickTimer" title="Quick Pomodoro Focus (Alt+4)">
+            <span>🍅</span>
+            <span class="quick-btn-text">Timer</span>
+          </button>
+          <button class="btn-quick-action" id="topbarQuickSw" title="Quick Stopwatch (Alt+4)">
+            <span>⚡</span>
+            <span class="quick-btn-text">Stopwatch</span>
+          </button>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <!-- Search -->
+        <div class="search-wrapper" id="searchWrapper">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="search" id="searchInput" class="search-input" placeholder="Search tasks… (Ctrl+K)" aria-label="Search tasks" />
+          <kbd class="search-kbd">⌘K</kbd>
+        </div>
+        <!-- Filters -->
+        <div class="filter-group">
+          <select id="filterSubject" class="filter-select" aria-label="Filter by subject">
+            <option value="">All Subjects</option>
+          </select>
+          <select id="filterPriority" class="filter-select" aria-label="Filter by priority">
+            <option value="">All Priorities</option>
+            <option value="urgent">🔴 Urgent</option>
+            <option value="high">🟠 High</option>
+            <option value="medium">🔵 Medium</option>
+            <option value="low">🟢 Low</option>
+          </select>
+        </div>
+        <!-- Add Task -->
+        <button class="btn btn-primary" id="addTaskBtn" title="Add Task (Ctrl+N)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>Add Task</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- PAGE VIEWS -->
+    <div class="page-content" id="pageContent">
+
+      <!-- ====== DASHBOARD VIEW ====== -->
+      <section class="view active" id="view-dashboard">
+        <!-- Motivational Banner -->
+        <div class="moti-banner" id="motiBanner">
+          <div class="moti-left">
+            <div class="moti-quote" id="motiQuote">"The secret of getting ahead is getting started."</div>
+            <div class="moti-author" id="motiAuthor">— Mark Twain</div>
+          </div>
+          <div class="moti-right">
+            <button class="moti-refresh" id="motiRefresh" title="New quote">✨ New Quote</button>
+          </div>
+          <div class="moti-particles" id="motiParticles"></div>
+        </div>
+
+        <!-- Home Page Quick Study Sprints Bar -->
+        <div class="home-quick-tools-bar" id="homeQuickToolsBar">
+          <div class="hqt-left">
+            <span class="hqt-fire">⚡</span>
+            <div>
+              <div class="hqt-title">Quick Study Sprints</div>
+              <div class="hqt-sub">One-click focus & sprint tools</div>
+            </div>
+          </div>
+          <div class="hqt-buttons">
+            <button class="btn-home-quick btn-hq-timer" id="homeQuickTimerBtn" title="Launch 25-minute Pomodoro focus session">
+              <span class="hq-icon">🍅</span>
+              <div class="hq-info">
+                <span class="hq-label">25m Focus</span>
+                <span class="hq-sub">Pomodoro timer</span>
+              </div>
+            </button>
+            <button class="btn-home-quick btn-hq-break" id="homeQuickBreakBtn" title="Launch 5-minute break timer">
+              <span class="hq-icon">☕</span>
+              <div class="hq-info">
+                <span class="hq-label">5m Break</span>
+                <span class="hq-sub">Recharge mind</span>
+              </div>
+            </button>
+            <button class="btn-home-quick btn-hq-sw" id="homeQuickSwBtn" title="Open and start stopwatch">
+              <span class="hq-icon">⚡</span>
+              <div class="hq-info">
+                <span class="hq-label">Stopwatch</span>
+                <span class="hq-sub">Track sprint time</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row" id="statsRow">
+          <div class="stat-card" id="statTotal">
+            <div class="stat-icon stat-purple">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statTotalVal">0</span>
+              <span class="stat-label">Total Tasks</span>
+            </div>
+          </div>
+          <div class="stat-card" id="statDone">
+            <div class="stat-icon stat-green">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statDoneVal">0</span>
+              <span class="stat-label">Completed</span>
+            </div>
+          </div>
+          <div class="stat-card" id="statOverdue">
+            <div class="stat-icon stat-red">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statOverdueVal">0</span>
+              <span class="stat-label">Overdue</span>
+            </div>
+          </div>
+          <div class="stat-card progress-card" id="statProgress">
+            <div class="progress-ring-container">
+              <svg class="progress-ring" width="80" height="80" viewBox="0 0 80 80">
+                <circle class="progress-ring-bg" cx="40" cy="40" r="32" />
+                <circle class="progress-ring-fill" id="progressRingFill" cx="40" cy="40" r="32" />
+              </svg>
+              <span class="progress-text" id="progressText">0%</span>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statTodayVal">0/0</span>
+              <span class="stat-label">Today's Progress</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Task Board Columns -->
+        <div class="task-board" id="taskBoard">
+          <!-- OVERDUE -->
+          <div class="task-column" id="col-overdue">
+            <div class="column-header">
+              <div class="column-title">
+                <span class="column-dot overdue-dot"></span>
+                <h2>Overdue</h2>
+                <span class="column-count badge-overdue" id="count-overdue">0</span>
+              </div>
+            </div>
+            <div class="task-list" id="list-overdue" role="list"></div>
+          </div>
+
+          <!-- TODAY -->
+          <div class="task-column" id="col-today">
+            <div class="column-header">
+              <div class="column-title">
+                <span class="column-dot today-dot"></span>
+                <h2>Today</h2>
+                <span class="column-count badge-today" id="count-today">0</span>
+              </div>
+            </div>
+            <div class="task-list" id="list-today" role="list"></div>
+          </div>
+
+          <!-- UPCOMING -->
+          <div class="task-column" id="col-upcoming">
+            <div class="column-header">
+              <div class="column-title">
+                <span class="column-dot upcoming-dot"></span>
+                <h2>Upcoming</h2>
+                <span class="column-count badge-upcoming" id="count-upcoming">0</span>
+              </div>
+            </div>
+            <div class="task-list" id="list-upcoming" role="list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== BOARD VIEW (Drag & Drop Priority) ====== -->
+      <section class="view" id="view-board">
+        <div class="board-header">
+          <h2 class="view-title">Priority Board</h2>
+          <p class="view-subtitle">Drag tasks between columns to reprioritize</p>
+        </div>
+        <div class="priority-board" id="priorityBoard">
+          <div class="priority-column" id="prio-urgent" data-priority="urgent">
+            <div class="priority-col-header urgent-header">
+              <span class="prio-dot"></span>
+              <h3>Urgent</h3>
+              <span class="column-count" id="pcount-urgent">0</span>
+            </div>
+            <div class="priority-drop-zone" id="drop-urgent" data-priority="urgent"></div>
+          </div>
+          <div class="priority-column" id="prio-high" data-priority="high">
+            <div class="priority-col-header high-header">
+              <span class="prio-dot"></span>
+              <h3>High</h3>
+              <span class="column-count" id="pcount-high">0</span>
+            </div>
+            <div class="priority-drop-zone" id="drop-high" data-priority="high"></div>
+          </div>
+          <div class="priority-column" id="prio-medium" data-priority="medium">
+            <div class="priority-col-header medium-header">
+              <span class="prio-dot"></span>
+              <h3>Medium</h3>
+              <span class="column-count" id="pcount-medium">0</span>
+            </div>
+            <div class="priority-drop-zone" id="drop-medium" data-priority="medium"></div>
+          </div>
+          <div class="priority-column" id="prio-low" data-priority="low">
+            <div class="priority-col-header low-header">
+              <span class="prio-dot"></span>
+              <h3>Low</h3>
+              <span class="column-count" id="pcount-low">0</span>
+            </div>
+            <div class="priority-drop-zone" id="drop-low" data-priority="low"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== STUDY TOOLS VIEW ====== -->
+      <section class="view" id="view-tools">
+        <div class="board-header">
+          <h2 class="view-title tools-title">⏱ Study Tools</h2>
+          <p class="view-subtitle">Pomodoro Focus Timer · Sprint Stopwatch · IST Clock</p>
+        </div>
+
+        <!-- ── TIMER + STOPWATCH ROW ── -->
+        <div class="timer-sw-row">
+
+          <!-- POMODORO / TIMER -->
+          <div class="tool-card timer-card">
+            <div class="tool-card-header">
+              <span class="tool-card-icon">🍅</span>
+              <div>
+                <h3 class="tool-card-title">Pomodoro Timer</h3>
+                <p class="tool-card-sub">Focus sessions that work</p>
+              </div>
+            </div>
+
+            <!-- Preset Buttons -->
+            <div class="timer-presets">
+              <button class="preset-btn active" data-mins="25" id="preset25">🎯 Focus</button>
+              <button class="preset-btn" data-mins="5"  id="preset5">☕ Short Break</button>
+              <button class="preset-btn" data-mins="15" id="preset15">🌿 Long Break</button>
+              <button class="preset-btn" data-mins="0"  id="presetCustom">✏️ Custom</button>
+            </div>
+
+            <!-- Custom input (hidden by default) -->
+            <div class="custom-time-row" id="customTimeRow" style="display:none">
+              <input type="number" id="customMins" class="custom-time-input" min="1" max="999" placeholder="min" />
+              <span class="custom-sep">:</span>
+              <input type="number" id="customSecs" class="custom-time-input" min="0" max="59" placeholder="sec" />
+              <button class="btn-set" id="btnSetCustom">Set</button>
+            </div>
+
+            <!-- Timer Ring Display -->
+            <div class="timer-display">
+              <svg class="timer-ring" width="200" height="200" viewBox="0 0 200 200">
+                <defs>
+                  <linearGradient id="timerGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#f43f5e"/>
+                    <stop offset="50%" stop-color="#f59e0b"/>
+                    <stop offset="100%" stop-color="#7c3aed"/>
+                  </linearGradient>
+                </defs>
+                <circle class="timer-ring-bg" cx="100" cy="100" r="88"/>
+                <circle class="timer-ring-fill" id="timerRingFill" cx="100" cy="100" r="88"/>
+              </svg>
+              <div class="timer-center">
+                <div class="timer-time" id="timerDisplay">25:00</div>
+                <div class="timer-label" id="timerLabel">Focus Time</div>
+                <div class="timer-session" id="timerSession">Session 1</div>
+              </div>
+            </div>
+
+            <!-- Timer Controls -->
+            <div class="timer-controls">
+              <button class="timer-btn timer-reset" id="timerReset" title="Reset">⟳</button>
+              <button class="timer-btn timer-play" id="timerPlay">▶ Start</button>
+              <button class="timer-btn timer-skip" id="timerSkip" title="Skip">⏭</button>
+            </div>
+
+            <!-- Session dots -->
+            <div class="session-dots" id="sessionDots">
+              <span class="s-dot active"></span>
+              <span class="s-dot"></span>
+              <span class="s-dot"></span>
+              <span class="s-dot"></span>
+            </div>
+          </div>
+
+          <!-- STOPWATCH -->
+          <div class="tool-card stopwatch-card">
+            <div class="tool-card-header">
+              <span class="tool-card-icon">⚡</span>
+              <div>
+                <h3 class="tool-card-title">Stopwatch</h3>
+                <p class="tool-card-sub">Track your focus sprints</p>
+              </div>
+            </div>
+
+            <!-- Stopwatch Display -->
+            <div class="sw-display">
+              <div class="sw-time" id="swDisplay"><span id="swMain">00:00</span><span class="sw-ms" id="swMs">.00</span></div>
+              <div class="sw-ring-wrap">
+                <svg class="sw-arc" width="160" height="160" viewBox="0 0 160 160">
+                  <defs>
+                    <linearGradient id="swGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#06b6d4"/>
+                      <stop offset="100%" stop-color="#10b981"/>
+                    </linearGradient>
+                  </defs>
+                  <circle class="sw-arc-bg" cx="80" cy="80" r="70"/>
+                  <circle class="sw-arc-fill" id="swArcFill" cx="80" cy="80" r="70"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- Stopwatch Controls -->
+            <div class="timer-controls">
+              <button class="timer-btn timer-reset" id="swReset">⟳</button>
+              <button class="timer-btn timer-play" id="swPlay">▶ Start</button>
+              <button class="timer-btn sw-lap-btn" id="swLap" disabled>✦ Lap</button>
+            </div>
+
+            <!-- Laps List -->
+            <div class="laps-container" id="lapsContainer">
+              <div class="laps-header" id="lapsHeader" style="display:none">
+                <span>#</span><span>Lap Time</span><span>Total</span>
+              </div>
+              <div class="laps-list" id="lapsList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====== CALENDAR VIEW ====== -->
+      <section class="view" id="view-calendar">
+        <div class="board-header">
+          <h2 class="view-title">Calendar View</h2>
+          <p class="view-subtitle">Track deadlines across the month</p>
+        </div>
+        <div class="calendar-wrapper">
+          <div class="calendar-nav">
+            <button class="cal-nav-btn" id="calPrev" aria-label="Previous month">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <h3 id="calMonthLabel" class="cal-month-label"></h3>
+            <button class="cal-nav-btn" id="calNext" aria-label="Next month">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="cal-legend">
+            <span class="legend-item"><span class="legend-dot overdue-dot"></span>Overdue</span>
+            <span class="legend-item"><span class="legend-dot today-dot"></span>Today</span>
+            <span class="legend-item"><span class="legend-dot upcoming-dot"></span>Upcoming</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ───────────────── MODAL: Add / Edit Task ─────────────────── -->
+  <div class="modal-overlay" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card" id="modalCard">
+      <div class="modal-header">
+        <h2 id="modalTitle">New Task</h2>
+        <button class="modal-close" id="modalClose" aria-label="Close modal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <form id="taskForm" novalidate>
+        <input type="hidden" id="editTaskId" />
+        <div class="form-group">
+          <label for="taskTitle" class="form-label">Title <span class="required">*</span></label>
+          <input type="text" id="taskTitle" class="form-input" placeholder="e.g. Chapter 5 Essay Draft" required maxlength="120" />
+          <div class="char-counter" id="titleCounter">0/120</div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="taskSubject" class="form-label">Subject <span class="required">*</span></label>
+            <select id="taskSubject" class="form-input" required>
+              <option value="">Select subject…</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="taskPriority" class="form-label">Priority</label>
+            <select id="taskPriority" class="form-input">
+              <option value="urgent">🔴 Urgent</option>
+              <option value="high">🟠 High</option>
+              <option value="medium" selected>🔵 Medium</option>
+              <option value="low">🟢 Low</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="taskDeadline" class="form-label">Deadline <span class="required">*</span></label>
+            <input type="date" id="taskDeadline" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label for="taskEstTime" class="form-label">Est. Time (min)</label>
+            <input type="number" id="taskEstTime" class="form-input" placeholder="e.g. 90" min="5" max="999" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="taskNotes" class="form-label">Notes</label>
+          <textarea id="taskNotes" class="form-input form-textarea" placeholder="Additional details…" maxlength="500" rows="3"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" id="cancelTaskBtn">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="saveTaskBtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Save Task
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ───────────────── MODAL: Add Subject ─────────────────── -->
+  <div class="modal-overlay" id="subjectModal" role="dialog" aria-modal="true" aria-labelledby="subjectModalTitle">
+    <div class="modal-card modal-sm" id="subjectModalCard">
+      <div class="modal-header">
+        <h2 id="subjectModalTitle">Add Subject</h2>
+        <button class="modal-close" id="subjectModalClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="form-group">
+        <label for="subjectName" class="form-label">Subject Name</label>
+        <input type="text" id="subjectName" class="form-input" placeholder="e.g. Organic Chemistry" maxlength="40" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Color</label>
+        <div class="color-picker" id="colorPicker"></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" id="cancelSubjectBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveSubjectBtn">Add Subject</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────── MODAL: Keyboard Shortcuts ─────────────────── -->
+  <div class="modal-overlay" id="shortcutsModal" role="dialog" aria-modal="true" aria-labelledby="shortcutsTitle">
+    <div class="modal-card modal-sm" id="shortcutsModalCard">
+      <div class="modal-header">
+        <h2 id="shortcutsTitle">⌨️ Keyboard Shortcuts</h2>
+        <button class="modal-close" id="shortcutsClose" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="shortcuts-grid">
+        <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>N</kbd><span>New task</span></div>
+        <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>K</kbd><span>Focus search</span></div>
+        <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>B</kbd><span>Toggle sidebar</span></div>
+        <div class="shortcut-item"><kbd>Ctrl</kbd>+<kbd>⇧</kbd>+<kbd>L</kbd><span>Toggle theme</span></div>
+        <div class="shortcut-item"><kbd>Alt</kbd>+<kbd>1</kbd><span>Dashboard view</span></div>
+        <div class="shortcut-item"><kbd>Alt</kbd>+<kbd>2</kbd><span>Board view</span></div>
+        <div class="shortcut-item"><kbd>Alt</kbd>+<kbd>3</kbd><span>Calendar view</span></div>
+        <div class="shortcut-item"><kbd>Alt</kbd>+<kbd>4</kbd><span>Study Tools view</span></div>
+        <div class="shortcut-item"><kbd>?</kbd><span>Show shortcuts</span></div>
+        <div class="shortcut-item"><kbd>Esc</kbd><span>Close modal</span></div>
+        <div class="shortcut-item"><kbd>Del</kbd><span>Delete focused task</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ───────────────── TOAST NOTIFICATION ─────────────────── -->
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas" style="position:fixed;inset:0;pointer-events:none;z-index:9999;width:100%;height:100%"></canvas>
+
+  <script src="app.js"></script>
+</body>
+</html>
